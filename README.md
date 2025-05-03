@@ -161,7 +161,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 **Authors**
 
-- Your Name - [Deepak](https://phoenixdev100.tech)
+- [Deepak](https://phoenixdev100.tech)
 
 ## 🙏 **Acknowledgments**
 
