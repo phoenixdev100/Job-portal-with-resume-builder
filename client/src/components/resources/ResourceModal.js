@@ -85,7 +85,7 @@ const ResourceModal = ({ resource, onClose }) => {
               content: [
                 'HTML5: Structure and semantics',
                 'CSS3: Styling and responsive design',
-                'JavaScript: DOM manipulation and events',
+                'JavaScript - DOM manipulation and events',
                 'Frontend frameworks (React, Vue, Angular)',
                 'Version control with Git'
               ]
