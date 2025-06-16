@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
@@ -31,7 +31,7 @@ function App() {
       <AuthProvider>
         <AccessibilityProvider>
           <Router>
-            <div className="flex flex-col min-h-screen bg-gray-50">
+            <div className="flex flex-col min-h-screen bg-gray-50" style={{ WebkitFontSmoothing: 'antialiased' }}>
               <Navbar />
               <main className="flex-grow pt-20">
                 <Routes>

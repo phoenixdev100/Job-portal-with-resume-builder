@@ -2,6 +2,11 @@
   "name": "accessible-job-portal-client",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
