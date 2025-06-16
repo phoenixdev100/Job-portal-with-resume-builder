@@ -23,14 +23,19 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async (token) => {
     try {
-      const config = {
+      console.log('Loading user with token:', token);
+      const res = await axios.get('/users/me', {
         headers: {
-          'x-auth-token': token
-        }
-      };
-      const res = await axios.get('/api/users/profile', config);
+          'x-auth-token': token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        withCredentials: true
+      });
+      console.log('User loaded successfully:', res.data);
       setUser(res.data);
     } catch (err) {
+      console.error('Error loading user:', err);
       localStorage.removeItem('token');
       setError(err.response?.data?.msg || 'Error loading user');
     } finally {
@@ -40,13 +45,14 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post('/api/users/login', { 
+      const res = await axios.post('/users/login', { 
         email, 
         password 
       }, {
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        withCredentials: true
       });
       
       if (!res.data.token) {
@@ -69,10 +75,11 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const res = await axios.post('/api/users/register', userData, {
+      const res = await axios.post('/users/register', userData, {
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        withCredentials: true
       });
       
       if (!res.data.token) {
