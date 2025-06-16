@@ -1,111 +1,90 @@
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
 const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-require('dotenv').config();
-const path = require('path');
-const fs = require('fs');
-
-const dev = process.env.NODE_ENV !== 'production';
 const app = express();
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'x-auth-token', 'Authorization'],
-  exposedHeaders: ['x-auth-token']
-}));
-
-// Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-// Logging middleware
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-  next();
+// Root route
+app.get('/', (req, res) => {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Job Portal Backend</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+          }
+          .container {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          }
+          h1 {
+            color: #4a6cf7;
+          }
+          .status {
+            color: #10b981;
+            font-weight: bold;
+          }
+          .endpoints {
+            margin-top: 2rem;
+            text-align: left;
+            display: inline-block;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>🚀 Job Portal Backend</h1>
+          <p class="status">✅ Backend is running successfully!</p>
+          <div class="endpoints">
+            <p>Available endpoints:</p>
+            <ul>
+              <li>GET <code>/api/health</code> - Health check</li>
+              <li>GET <code>/api/test</code> - Test endpoint</li>
+            </ul>
+          </div>
+          <p>Deployed on Vercel at ${new Date().toLocaleString()}</p>
+        </div>
+      </body>
+    </html>
+  `;
+  res.send(html);
 });
 
-// Import routes
-const userRoutes = require('../routes/users');
-const jobRoutes = require('../routes/jobs');
-const employerRoutes = require('../routes/employers');
-const resumeAnalysisRoute = require('../routes/resumeAnalysis');
-
-// Use routes
-app.use('/api/users', userRoutes);
-app.use('/api/jobs', jobRoutes);
-app.use('/api/employers', employerRoutes);
-app.use('/api', resumeAnalysisRoute);
-
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'OK', timestamp: new Date() });
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Error:', err);
-  res.status(500).json({ 
-    error: {
-      message: err.message || 'Internal Server Error',
-      ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-    }
+// Simple test endpoint
+app.get('/api/test', (req, res) => {
+  res.status(200).json({ 
+    message: 'API is working!',
+    timestamp: new Date().toISOString()
   });
 });
 
-// MongoDB connection
-const connectDB = async (retries = 5) => {
-  const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/job-portal';
-  
-  for (let i = 0; i < retries; i++) {
-    try {
-      await mongoose.connect(mongoUri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-      console.log('MongoDB connected successfully');
-      return;
-    } catch (error) {
-      console.error(`MongoDB connection attempt ${i + 1} failed:`, error.message);
-      if (i === retries - 1) {
-        console.error('Max retries reached. Could not connect to MongoDB.');
-        process.exit(1);
-      }
-      await new Promise(resolve => setTimeout(resolve, 5000));
-    }
-  }
-};
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
 
-// Start server
-const startServer = async () => {
-  try {
-    await connectDB();
-    
-    const port = process.env.PORT || 5000;
-    const server = app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
-    
-    module.exports = app;
-  } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
-  }
-};
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not Found' });
+});
 
-// Start the server
-if (require.main === module) {
-  startServer();
-}
+// Error handler
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
 
-// Export the Express API for Vercel
+// Export the app for Vercel
 module.exports = app;
