@@ -142,23 +142,23 @@ const JobList = () => {
     }
   ];
 
-  useEffect(() => {
-    const initializeJobs = () => {
-      setIsLoading(true);
-      try {
-        // Store jobs data in localStorage for persistence
-        if (!localStorage.getItem('jobListings')) {
-          localStorage.setItem('jobListings', JSON.stringify(jobsData));
-        }
-      } catch (error) {
-        console.error('Error initializing jobs:', error);
-      } finally {
-        setIsLoading(false);
+  const initializeJobs = React.useCallback(() => {
+    setIsLoading(true);
+    try {
+      // Store jobs data in localStorage for persistence
+      if (!localStorage.getItem('jobListings')) {
+        localStorage.setItem('jobListings', JSON.stringify(jobsData));
       }
-    };
+    } catch (error) {
+      console.error('Error initializing jobs:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [jobsData]);
 
+  useEffect(() => {
     initializeJobs();
-  }, []);
+  }, [initializeJobs]);
 
   const jobTypes = ['All Types', 'Full-time', 'Part-time', 'Contract', 'Internship'];
   const accessibilityFeatures = [

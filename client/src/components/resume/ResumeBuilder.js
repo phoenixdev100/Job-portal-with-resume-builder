@@ -1,13 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { motion } from 'framer-motion';
-import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 
-// PDF styles remain the same
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
@@ -32,7 +28,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// Resume templates
 const templates = [
   {
     id: 'modern',

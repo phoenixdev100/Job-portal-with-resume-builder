@@ -145,7 +145,7 @@ const Dashboard = () => {
           {/* Recent Jobs */}
           <div className="bg-white rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Recent Jobs</h2>
+              <div className="text-4xl font-bold text-purple-600">{stats.placements}%</div>
               <Link to="/jobs" className="text-purple-600 hover:text-purple-700 text-sm font-medium">
                 View all
               </Link>

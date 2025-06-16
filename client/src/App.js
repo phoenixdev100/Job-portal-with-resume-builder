@@ -19,7 +19,6 @@ import JobList from './components/jobs/JobList';
 import JobDetail from './components/jobs/JobDetail';
 import Profile from './components/profile/Profile';
 import CreateJob from './components/jobs/CreateJob';
-import Jobs from './components/pages/Jobs';
 import Companies from './components/pages/Companies';
 import Resources from './components/pages/Resources';
 import ResumeBuilder from './components/resume/ResumeBuilder';

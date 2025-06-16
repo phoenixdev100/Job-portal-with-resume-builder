@@ -3,7 +3,6 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-hot-toast';
-import { motion } from 'framer-motion';
 
 const Profile = () => {
   const { user } = useAuth();
