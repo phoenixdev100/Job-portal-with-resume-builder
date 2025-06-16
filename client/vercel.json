@@ -9,21 +9,14 @@
       }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/static/(.*)",
-      "headers": {
-        "cache-control": "public, max-age=31536000, immutable"
-      },
-      "destination": "/static/$1"
+      "src": "^/static/(.*)",
+      "dest": "/static/$1"
     },
     {
-      "source": "/(.*).(jpg|jpeg|png|gif|ico|svg|css|js)$",
-      "destination": "/$1.$2"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "^/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
