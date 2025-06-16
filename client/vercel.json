@@ -9,24 +9,21 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/static/(.*)",
+      "source": "/static/(.*)",
       "headers": {
         "cache-control": "public, max-age=31536000, immutable"
       },
-      "dest": "/static/$1"
+      "destination": "/static/$1"
     },
     {
-      "src": "/(.*).(jpg|jpeg|png|gif|ico|svg|css|js)$",
-      "dest": "/$1.$2"
+      "source": "/(.*).(jpg|jpeg|png|gif|ico|svg|css|js)$",
+      "destination": "/$1.$2"
     },
     {
-      "src": "^/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
-  ],
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
