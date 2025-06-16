@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import LoadingSpinner from '../common/LoadingSpinner';
 
@@ -9,7 +9,8 @@ const JobList = () => {
   const [remoteOnly, setRemoteOnly] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const jobsData = [
+  const jobsData = useMemo(() => {
+    return [
     {
       id: 1,
       title: 'Senior Software Engineer',
@@ -141,6 +142,7 @@ const JobList = () => {
       applicationDeadline: '2025-03-03'
     }
   ];
+  }, []); // Empty dependency array means this is only created once
 
   const initializeJobs = React.useCallback(() => {
     setIsLoading(true);

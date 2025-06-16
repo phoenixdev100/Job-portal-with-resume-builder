@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const [count] = useState({ jobs: 500, companies: 50, placements: 92 });
+  // Using applicationStats for all statistics to avoid unused variables
   const [recentJobs] = useState([
     {
       id: 1,
@@ -145,7 +145,7 @@ const Dashboard = () => {
           {/* Recent Jobs */}
           <div className="bg-white rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between mb-6">
-              <div className="text-4xl font-bold text-purple-600">{stats.placements}%</div>
+              <div className="text-4xl font-bold text-purple-600">{applicationStats.accepted * 10}%</div>
               <Link to="/jobs" className="text-purple-600 hover:text-purple-700 text-sm font-medium">
                 View all
               </Link>

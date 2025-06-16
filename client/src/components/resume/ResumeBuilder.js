@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-
+// PDF Styles (commented out since not currently in use)
+/*
+import { StyleSheet } from '@react-pdf/renderer';
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
@@ -27,6 +30,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+*/
 
 const templates = [
   {
@@ -130,11 +134,6 @@ const ResumeBuilder = () => {
   });
   const [atsScore, setAtsScore] = useState(0);
 
-  // Update ATS score whenever form data changes
-  useEffect(() => {
-    updateATSScore();
-  }, [formData]);
-
   // Handle template selection
   const handleTemplateSelect = (template) => {
     setSelectedTemplate(template);
@@ -143,18 +142,6 @@ const ResumeBuilder = () => {
     if (previewElement) {
       previewElement.className = `border rounded-lg p-8 min-h-[600px] bg-white ${template.style.bgAccent}`;
     }
-  };
-
-  // Handle drag and drop
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-
-    const items = Array.from(sections);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    setSections(items);
-    updateATSScore();
   };
 
   // Update form data
@@ -196,9 +183,8 @@ const ResumeBuilder = () => {
   };
 
   // Calculate ATS score
-  const updateATSScore = () => {
+  const updateATSScore = useCallback(() => {
     let score = 0;
-    const maxScore = 100;
     
     // Check personal information completeness (20%)
     const personalInfo = formData.personal || {};
@@ -237,7 +223,12 @@ const ResumeBuilder = () => {
     }
 
     setAtsScore(Math.round(score));
-  };
+  }, [formData]);
+
+  // Update ATS score whenever form data changes
+  useEffect(() => {
+    updateATSScore();
+  }, [updateATSScore]);
 
   // Export as PDF
   const exportPDF = async () => {
