@@ -3,9 +3,18 @@
   "version": "1.0.0",
   "description": "Backend for accessible job portal",
   "main": "server.js",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "vercel-build": "echo 'Vercel build completed'"
+  },
+  "vercel": {
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/api" }
+    ]
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

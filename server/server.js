@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Configure CORS
 app.use(cors({
-  origin: 'http://localhost:3000', // React app's URL
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000', // React app's URL
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'x-auth-token', 'Authorization'],
